@@ -1,0 +1,22 @@
+{
+  "name": "org.skynet.ghysx-unity",
+  "version": "1.0.0",
+  "displayName": "GhysX",
+  "description": "GhysX is a fully featured, zero-cost, high-performance, low-memory solution for Unity's all-platform native c# hotupdate.",
+  "category": "Runtime",
+  "documentationUrl": "https://ghysx-unity.doc.skynet.org/#/",
+  "changelogUrl": "https://ghysx-unity.doc.skynet.org/#/other/changelog",
+  "licensesUrl": "https://github.com/skynet/ghysx-unity/blob/main/LICENSE",
+  "keywords": [
+    "GhysX",
+    "hotupdate",
+    "hotfix",
+    "skynet",
+    "ghysx-unity"
+  ],
+  "author": {
+    "name": "skynet",
+    "email": "ghysx-unity@skynet.com",
+    "url": "https://ghysx-unity.skynet.org"
+  }
+}
