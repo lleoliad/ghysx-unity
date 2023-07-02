@@ -2,7 +2,9 @@
     "name": "GhysX.Editor",
     "rootNamespace": "",
     "references": [
-        "GhysX.Runtime"
+        "GhysX.Runtime",
+        "YooAsset",
+        "YooAsset.Editor"
     ],
     "includePlatforms": [
         "Editor"
