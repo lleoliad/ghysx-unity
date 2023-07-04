@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using GhysX.Framework.Settings;
+using UniFramework.Event;
+using UniFramework.Singleton;
 using UnityEngine;
 using YooAsset;
 
@@ -29,6 +31,12 @@ namespace GhysX.Framework
 
                 Settings = UnityEngine.Resources.Load<SettingsData>("GhysXSettings");
                 UnityEngine.Debug.Log($"GhysX Settings: {JsonUtility.ToJson(Settings)}");
+                
+                // 初始化事件系统
+                UniEvent.Initalize();
+
+                // 初始化单例系统
+                UniSingleton.Initialize();
                 
                 // 初始化资源系统
                 YooAssets.Initialize();

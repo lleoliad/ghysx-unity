@@ -2,7 +2,9 @@
     "name": "GhysX.Runtime",
     "rootNamespace": "",
     "references": [
-        "GUID:e34a5702dd353724aa315fb8011f08c3"
+        "GUID:e34a5702dd353724aa315fb8011f08c3",
+        "GUID:f22fac247a56d2d41b687bb0d900e54e",
+        "GUID:b35e33884f6755d43b7e0511e88956d0"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
