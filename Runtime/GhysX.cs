@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GhysX.Framework.Settings;
 using UnityEngine;
 using YooAsset;
 
@@ -9,6 +10,7 @@ namespace GhysX.Framework
     {
         private static bool _isInitialize = false;
         private static GameObject _driver = null;
+        public static SettingsData Settings { get; set; }
 
         public static void Initialize()
         {
@@ -24,6 +26,9 @@ namespace GhysX.Framework
                 _driver = new UnityEngine.GameObject($"[{nameof(GhysX)}]");
                 UnityEngine.Object.DontDestroyOnLoad(_driver);
                 UnityEngine.Debug.Log($"{nameof(GhysX)} initialize !");
+
+                Settings = UnityEngine.Resources.Load<SettingsData>("GhysXSettings");
+                UnityEngine.Debug.Log($"GhysX Settings: {JsonUtility.ToJson(Settings)}");
                 
                 // 初始化资源系统
                 YooAssets.Initialize();
