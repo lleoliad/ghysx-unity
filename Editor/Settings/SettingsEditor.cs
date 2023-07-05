@@ -27,7 +27,7 @@ namespace GhysX.Framework.Editor
             
             // tree.Add("General", new GeneralSetting());
             tree.Add("General", GhysXSettings.Instance.settings as SettingsData);
-            tree.Add("Yoo Asset", GhysXSettings.Instance.settings as SettingsData);
+            // tree.Add("Yoo Asset", GhysXSettings.Instance.settings as SettingsData);
 
             return tree;
         }
