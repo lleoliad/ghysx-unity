@@ -27,7 +27,7 @@ namespace GhysX.Framework.Editor
             
             // tree.Add("General", new GeneralSetting());
             tree.Add("General", GhysXSettings.Instance.settings as SettingsData);
-            // tree.Add("Yoo Asset", GhysXSettings.Instance.settings as SettingsData);
+            tree.Add("Yoo Asset", GhysXSettings.Instance.yooAssetSettings as YooAssetSettingsData);
 
             return tree;
         }
@@ -37,10 +37,14 @@ namespace GhysX.Framework.Editor
     {
         [AssetsOnly]
         public ScriptableObject settingsData;
+        
+        [AssetsOnly]
+        public ScriptableObject yooAssetSettings;
 
         public GeneralSetting()
         {
             settingsData = GhysXSettings.Instance.settings as SettingsData;
+            settingsData = GhysXSettings.Instance.yooAssetSettings as YooAssetSettingsData;
         }
     }
 }

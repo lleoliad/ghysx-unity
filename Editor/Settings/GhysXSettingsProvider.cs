@@ -13,6 +13,7 @@ namespace GhysX.Framework.Editor
         private SerializedProperty _enable;
         private SerializedProperty _playMode;
         private SerializedProperty _settings;
+        private SerializedProperty _yooAssetSettings;
         
         private GUIStyle buttonStyle;
         
@@ -30,6 +31,7 @@ namespace GhysX.Framework.Editor
             _enable = _serializedObject.FindProperty("enable");
             _playMode = _serializedObject.FindProperty("playMode");
             _settings = _serializedObject.FindProperty("settings");
+            _yooAssetSettings = _serializedObject.FindProperty("yooAssetSettings");
             // _useGlobalIl2cpp = _serializedObject.FindProperty("useGlobalIl2cpp");
             // _hybridclrRepoURL = _serializedObject.FindProperty("hybridclrRepoURL");
             // _il2cppPlusRepoURL = _serializedObject.FindProperty("il2cppPlusRepoURL");
@@ -120,6 +122,7 @@ namespace GhysX.Framework.Editor
                 EditorGUILayout.PropertyField(_enable);
                 EditorGUILayout.PropertyField(_playMode);
                 EditorGUILayout.PropertyField(_settings);
+                EditorGUILayout.PropertyField(_yooAssetSettings);
                 // EditorGUILayout.PropertyField(_hybridclrRepoURL);
                 // EditorGUILayout.PropertyField(_il2cppPlusRepoURL);
                 // EditorGUILayout.PropertyField(_useGlobalIl2cpp);

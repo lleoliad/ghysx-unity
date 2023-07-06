@@ -14,6 +14,8 @@ namespace GhysX.Framework.Editor
         public EPlayMode playMode = EPlayMode.HostPlayMode; //{ private set; get; }
 
         public ScriptableObject settings;
+        
+        public ScriptableObject yooAssetSettings;
 
         // [Header("使用全局安装的il2cpp")]
         // public bool useGlobalIl2cpp;
