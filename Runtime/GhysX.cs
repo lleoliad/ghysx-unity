@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Globalization;
+using GhysX.Framework.Extensions;
 using GhysX.Framework.Settings;
 using GhysX.Framework.YooAsset;
 using Loxodon.Framework.Asynchronous;
@@ -47,9 +48,6 @@ namespace GhysX.Framework
                 UnityEngine.Debug.Log($"GhysX Settings: {JsonUtility.ToJson(Settings)}");
 
                 InitializeUniFramework();
-                // InitializeYooAsset();
-                // YooAssetLauncher.InitializeYooAsset();
-                // InitializeLoxodonFramework();
             }
         }
 
@@ -161,6 +159,7 @@ namespace GhysX.Framework
                 // yield return handle;
                 // GameObject logo = handle.InstantiateSync();
                 
+                GlobalWindowManager.Root.transform.DestroyChildrenImmediate();
                 IUIViewLocator locator = Context.GetApplicationContext().GetService<IUIViewLocator>();
                 var window = locator.LoadWindow("Logo");
                 window.Create();
@@ -261,8 +260,6 @@ namespace GhysX.Framework
             {
                 var gameObject = UnityEngine.Resources.Load<GameObject>("UI/Launcher/Launcher");
                 GameObject.Instantiate(gameObject);
-                InitializeLoxodonFramework();
-                InitializeYooAsset();
             }
         }
 

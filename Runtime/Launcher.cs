@@ -14,6 +14,8 @@ namespace GhysX.Framework
             string appName = Application.productName;
             UnityEngine.Debug.Log($"GhysX:Launcher: {GhysX.Settings.playMode}");
             // UnityEngine.Debug.Log($"GhysX:Launcher: {appName}");
+            GhysX.InitializeLoxodonFramework();
+            GhysX.InitializeYooAsset();
         }
 
         void Start()
