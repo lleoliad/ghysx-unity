@@ -1,40 +1,42 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Loxodon.Framework.Messaging;
-using YooAsset;
 using UnityEngine;
 
-namespace GhysX.Framework.YooAsset
+namespace YooAsset
 {
-    public static class YooAssets
+    public static class YooAssetsHelper
     {
         /// <summary>
         /// 获取资源服务器地址
         /// </summary>
-        public static string GetHostServerURL()
+        public static string GetHostServerURL(string host, string version)
         {
-            //string hostServerIP = "http://10.0.2.2"; //安卓模拟器地址
-            string hostServerIP = "http://127.0.0.1";
-            string appVersion = "v1.0";
-
+            string hostServerIP = host;
+            string appVersion = version;
 #if UNITY_EDITOR
             if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.Android)
-                return $"{hostServerIP}/CDN/Android/{appVersion}";
+                return $"{hostServerIP}/Android/{appVersion}";
             else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.iOS)
-                return $"{hostServerIP}/CDN/IPhone/{appVersion}";
+                return $"{hostServerIP}/iOS/{appVersion}";
             else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.WebGL)
-                return $"{hostServerIP}/CDN/WebGL/{appVersion}";
+                return $"{hostServerIP}/WebGL/{appVersion}";
+            else if (UnityEditor.EditorUserBuildSettings.activeBuildTarget == UnityEditor.BuildTarget.StandaloneOSX)
+                return $"{hostServerIP}/OSX/{appVersion}";
             else
-                return $"{hostServerIP}/CDN/PC/{appVersion}";
+                return $"{hostServerIP}/Windows/{appVersion}";
 #else
 		if (Application.platform == RuntimePlatform.Android)
-			return $"{hostServerIP}/CDN/Android/{appVersion}";
+			return $"{hostServerIP}/Android/{appVersion}";
 		else if (Application.platform == RuntimePlatform.IPhonePlayer)
-			return $"{hostServerIP}/CDN/IPhone/{appVersion}";
+			return $"{hostServerIP}/iOS/{appVersion}";
 		else if (Application.platform == RuntimePlatform.WebGLPlayer)
-			return $"{hostServerIP}/CDN/WebGL/{appVersion}";
+			return $"{hostServerIP}/WebGL/{appVersion}";
+        else if (Application.platform == RuntimePlatform.OSXPlayer)
+			return $"{hostServerIP}/OSX/{appVersion}";
 		else
-			return $"{hostServerIP}/CDN/PC/{appVersion}";
+			return $"{hostServerIP}/Windows/{appVersion}";
 #endif
         }
     }
@@ -120,49 +122,57 @@ namespace GhysX.Framework.YooAsset
         }
     }
 #else
-/// <summary>
-/// StreamingAssets目录下资源查询帮助类
-/// </summary>
-public sealed class StreamingAssetsHelper
-{
-	private static bool _isInit = false;
-	private static readonly HashSet<string> _cacheData = new HashSet<string>();
+    /// <summary>
+    /// StreamingAssets目录下资源查询帮助类
+    /// </summary>
+    public sealed class StreamingAssetsHelper
+    {
+        private static bool _isInit = false;
+        private static readonly HashSet<string> _cacheData = new HashSet<string>();
 
-	/// <summary>
-	/// 初始化
-	/// </summary>
-	public static void Init()
-	{
-		if (_isInit == false)
-		{
-			_isInit = true;
-			var manifest = Resources.Load<BuildinFileManifest>("BuildinFileManifest");
-			foreach (string fileName in manifest.BuildinFiles)
-			{
-				_cacheData.Add(fileName);
-			}
-		}
-	}
+        /// <summary>
+        /// 初始化
+        /// </summary>
+        public static void Init()
+        {
+            if (_isInit == false)
+            {
+                _isInit = true;
+                var manifest = Resources.Load<BuildinFileManifest>("BuildinFileManifest");
+                foreach (string fileName in manifest.BuildinFiles)
+                {
+                    _cacheData.Add(fileName);
+                }
+            }
+        }
 
-	/// <summary>
-	/// 内置文件查询方法
-	/// </summary>
-	public static bool FileExists(string fileName)
-	{
-		if (_isInit == false)
-			Init();
-		return _cacheData.Contains(fileName);
-	}
-}
+        /// <summary>
+        /// 内置文件查询方法
+        /// </summary>
+        public static bool FileExists(string fileName)
+        {
+            if (_isInit == false)
+                Init();
+            return _cacheData.Contains(fileName);
+        }
+    }
 #endif
     
+    /// <summary>
+    /// 内置资源清单
+    /// </summary>
+    public class BuildinFileManifest : ScriptableObject
+    {
+        public List<string> BuildinFiles = new List<string>();
+    }
+
     public class InitializePackageSuccessMessage : MessageBase
     {
         public InitializePackageSuccessMessage(object sender) : base(sender)
         {
         }
     }
-    
+
     public class InitializePackageErrorMessage : MessageBase
     {
         public InitializePackageErrorMessage(object sender) : base(sender)

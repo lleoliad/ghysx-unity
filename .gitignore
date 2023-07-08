@@ -71,6 +71,9 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-
+# Other
 /[Pp]lugins/[Ss]irenix.meta
 /[Pp]lugins/[Ss]irenix/*
+/3rd/[Bb]est HTTP.meta
+/3rd/[Bb]est HTTP/*
+

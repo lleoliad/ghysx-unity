@@ -16,12 +16,15 @@ namespace GhysX.Framework.Settings
         
         [LabelText("默认资源包名称")]
         public string defaultPackageName = "DefaultPackage";
+        
+        [LabelText("资源版本号")]
+        public string resourceVersion = "1.0.0";
 
         [LabelText("服务地址")]
-        public string serverAddress = "http://127.0.0.1";
+        public string defaultHostServer = "http://127.0.0.1/";
         
-        [LabelText("服务备用地址")]
-        public string alternateServerAddress = "http://127.0.0.1";
+        [LabelText("备用主机服务器")]
+        public string fallbackHostServer = "http://127.0.0.1";
         
         [LabelText("运行模式")]
         [ValueDropdown(nameof(EPlayModeData))]

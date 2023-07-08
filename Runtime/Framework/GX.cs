@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Globalization;
-using GhysX.Framework.Extensions;
 using GhysX.Framework.Settings;
-using GhysX.Framework.YooAsset;
 using Loxodon.Framework.Asynchronous;
 using Loxodon.Framework.Binding;
 using Loxodon.Framework.Contexts;
@@ -18,7 +16,7 @@ using YooAssets = YooAsset.YooAssets;
 
 namespace GhysX.Framework
 {
-    public static partial class GhysX
+    public static partial class GX
     {
         private static bool _isInitialize = false;
         private static bool _isLoxodonFrameworkInitialize = false;
@@ -27,22 +25,24 @@ namespace GhysX.Framework
 
         public static YooAssetSettingsData YooAssetSettings { get; set; }
         
-        private static IMessenger Messenger { get; set; }
+        public static IMessenger Messenger { get; set; }
+        
+        public static WindowManager WindowManager { get; set; }
 
         public static void Initialize()
         {
             if (_isInitialize)
             {
-                UnityEngine.Debug.LogWarning($"{nameof(GhysX)} is initialized !");
+                UnityEngine.Debug.LogWarning($"{nameof(GX)} is initialized !");
                 return;
             }
 
             if (_isInitialize == false)
             {
                 _isInitialize = true;
-                _driver = new UnityEngine.GameObject($"[{nameof(GhysX)}]");
+                _driver = new UnityEngine.GameObject($"[{nameof(GX)}]");
                 UnityEngine.Object.DontDestroyOnLoad(_driver);
-                UnityEngine.Debug.Log($"{nameof(GhysX)} initialize !");
+                UnityEngine.Debug.Log($"{nameof(GX)} initialize !");
 
                 Settings = UnityEngine.Resources.Load<SettingsData>("GhysXSettings");
                 UnityEngine.Debug.Log($"GhysX Settings: {JsonUtility.ToJson(Settings)}");
@@ -53,7 +53,7 @@ namespace GhysX.Framework
 
         public static void InitializeUniFramework()
         {
-            UnityEngine.Debug.LogWarning($"{nameof(GhysX)} & UniFramework Initialize !");
+            UnityEngine.Debug.LogWarning($"{nameof(GX)} & UniFramework Initialize !");
             
             // 初始化事件系统
             UniEvent.Initalize();
@@ -64,7 +64,7 @@ namespace GhysX.Framework
 
         public static void InitializeYooAsset()
         {
-            UnityEngine.Debug.LogWarning($"{nameof(GhysX)} & YooAsset Initialize !");
+            UnityEngine.Debug.LogWarning($"{nameof(GX)} & YooAsset Initialize !");
             
             YooAssetSettings = UnityEngine.Resources.Load<YooAssetSettingsData>("GhysXYooAssetSettings");
 
@@ -95,7 +95,7 @@ namespace GhysX.Framework
 
         public static IEnumerator InitializeYooAssetPackage()
         {
-            UnityEngine.Debug.LogWarning($"{nameof(GhysX)} & YooAsset Package Initialize !");
+            UnityEngine.Debug.LogWarning($"{nameof(GX)} & YooAsset Package Initialize !");
             
             var packageName = YooAssetSettings.defaultPackageName;
 
@@ -131,8 +131,8 @@ namespace GhysX.Framework
                 var createParameters = new HostPlayModeParameters();
                 createParameters.DecryptionServices = new GameDecryptionServices();
                 createParameters.QueryServices = new GameQueryServices();
-                createParameters.DefaultHostServer = YooAsset.YooAssets.GetHostServerURL();
-                createParameters.FallbackHostServer = YooAsset.YooAssets.GetHostServerURL();
+                createParameters.DefaultHostServer = YooAssetsHelper.GetHostServerURL(YooAssetSettings.defaultHostServer, YooAssetSettings.version);
+                createParameters.FallbackHostServer = YooAssetsHelper.GetHostServerURL(YooAssetSettings.fallbackHostServer, YooAssetSettings.version);
                 initializationOperation = package.InitializeAsync(createParameters);
             }
 
@@ -141,7 +141,7 @@ namespace GhysX.Framework
             if (initializationOperation.Status == EOperationStatus.Succeed)
             {
                 // _machine.ChangeState<FsmUpdateVersion>();
-                UnityEngine.Debug.LogWarning($"{nameof(GhysX)} & YooAsset Package Initialize Succeed !!!");
+                UnityEngine.Debug.LogWarning($"{nameof(GX)} & YooAsset Package Initialize Succeed !!!");
 
                 // 重新读取配置
                 if (package.CheckLocationValid("GhysXYooAssetSettings"))
@@ -155,20 +155,20 @@ namespace GhysX.Framework
                 
                 Messenger.Publish(new InitializePackageSuccessMessage(_driver));
 
-                // var handle = package.LoadAssetAsync<GameObject>("Logo");
-                // yield return handle;
-                // GameObject logo = handle.InstantiateSync();
-                
-                GlobalWindowManager.Root.transform.DestroyChildrenImmediate();
-                IUIViewLocator locator = Context.GetApplicationContext().GetService<IUIViewLocator>();
-                var window = locator.LoadWindow("Logo");
-                window.Create();
-                ITransition transition = window.Show().OnStateChanged((w, state) =>
-                {
-                    // log.DebugFormat("Window:{0} State{1}",w.Name,state);
-                });
-
-                yield return transition.WaitForDone();
+                // // var handle = package.LoadAssetAsync<GameObject>("Logo");
+                // // yield return handle;
+                // // GameObject logo = handle.InstantiateSync();
+                //
+                // GlobalWindowManager.Root.transform.DestroyChildrenImmediate();
+                // IUIViewLocator locator = Context.GetApplicationContext().GetService<IUIViewLocator>();
+                // var window = locator.LoadWindow("Logo");
+                // window.Create();
+                // ITransition transition = window.Show().OnStateChanged((w, state) =>
+                // {
+                //     // log.DebugFormat("Window:{0} State{1}",w.Name,state);
+                // });
+                //
+                // yield return transition.WaitForDone();
             }
             else
             {
@@ -183,12 +183,14 @@ namespace GhysX.Framework
         {
             if (_isLoxodonFrameworkInitialize == false)
             {
-                UnityEngine.Debug.LogWarning($"{nameof(GhysX)} & Loxodon.Framework Initialize !");
+                UnityEngine.Debug.LogWarning($"{nameof(GX)} & Loxodon.Framework Initialize !");
                 _isLoxodonFrameworkInitialize = true;
                 GlobalWindowManager windowManager = UnityEngine.Object.FindObjectOfType<GlobalWindowManager>();
                 if (windowManager == null)
                     throw new NotFoundException("Not found the GlobalWindowManager.");
 
+                WindowManager = windowManager;
+                
                 ApplicationContext context = Context.GetApplicationContext();
 
                 IServiceContainer container = context.GetContainer();
@@ -239,7 +241,7 @@ namespace GhysX.Framework
                 _isInitialize = false;
                 if (_driver != null)
                     GameObject.Destroy(_driver);
-                UnityEngine.Debug.Log($"{nameof(GhysX)} destroy all !");
+                UnityEngine.Debug.Log($"{nameof(GX)} destroy all !");
             }
         }
 
