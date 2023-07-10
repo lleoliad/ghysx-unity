@@ -1,0 +1,7 @@
+{
+    "name": "SharpZipLib",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+	"allowUnsafeCode": true
+}

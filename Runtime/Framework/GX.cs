@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Globalization;
+using GhysX.Framework.Repositories;
+using GhysX.Framework.Services;
 using GhysX.Framework.Settings;
 using Loxodon.Framework.Asynchronous;
 using Loxodon.Framework.Binding;
@@ -212,9 +214,9 @@ namespace GhysX.Framework
                 /* register Localization */
                 container.Register<Localization>(localization);
 
-                /* register AccountRepository */
-                // IAccountRepository accountRepository = new AccountRepository();
-                // container.Register<IAccountService>(new AccountService(accountRepository));
+                /* register AuthRepository */
+                IAuthRepository authRepository = new AuthRepository();
+                container.Register<IAuthService>(new AuthService(authRepository));
 
                 /* Enable window state broadcast */
                 GlobalSetting.enableWindowStateBroadcast = true;
