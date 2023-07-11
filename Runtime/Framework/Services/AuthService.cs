@@ -18,8 +18,7 @@ namespace GhysX.Framework.Services
 
         public event EventHandler<AuthEventArgs> AuthFinished;
 
-
-        public IAsyncResult<AuthorizationInfo> Auth()
+        public virtual IAsyncResult<AuthorizationInfo> Auth()
         {
             string privateKey = "";
             string publicKey = "";
@@ -31,17 +30,17 @@ namespace GhysX.Framework.Services
             return Auth(authorizationInfo);
         }
 
-        public IAsyncResult<AuthorizationInfo> Auth(AuthorizationInfo authorizationInfo)
+        public virtual IAsyncResult<AuthorizationInfo> Auth(AuthorizationInfo authorizationInfo)
         {
             AsyncResult<AuthorizationInfo> result = new AsyncResult<AuthorizationInfo>();
             DoAuth(result, authorizationInfo);
             return result;
         }
 
-        protected async void DoAuth(IPromise<AuthorizationInfo> promise, AuthorizationInfo authorizationInfo)
+        private async void DoAuth(IPromise<AuthorizationInfo> promise, AuthorizationInfo authorizationInfo)
         {
             promise.SetResult(authorizationInfo);
-            _repository.Save(authorizationInfo);
+            await _repository.Save(authorizationInfo);
         }
 
         protected virtual void RaiseAuthFinished(bool succeed, AuthorizationInfo authorizationInfo)

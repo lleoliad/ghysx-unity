@@ -5,6 +5,8 @@ namespace GhysX.Framework.Repositories
 {
     public interface IAuthRepository
     {
+        AuthorizationInfo Current();
+        
         IAsyncResult<AuthorizationInfo> Get(string privateKey);
 
         IAsyncResult<AuthorizationInfo> Save(AuthorizationInfo authorizationInfo);

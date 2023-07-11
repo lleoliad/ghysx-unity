@@ -18,7 +18,7 @@ using YooAssets = YooAsset.YooAssets;
 
 namespace GhysX.Framework
 {
-    public static partial class GX
+    public static partial class Environment
     {
         private static bool _isInitialize = false;
         private static bool _isLoxodonFrameworkInitialize = false;
@@ -35,16 +35,16 @@ namespace GhysX.Framework
         {
             if (_isInitialize)
             {
-                UnityEngine.Debug.LogWarning($"{nameof(GX)} is initialized !");
+                UnityEngine.Debug.LogWarning($"{nameof(Environment)} is initialized !");
                 return;
             }
 
             if (_isInitialize == false)
             {
                 _isInitialize = true;
-                _driver = new UnityEngine.GameObject($"[{nameof(GX)}]");
+                _driver = new UnityEngine.GameObject($"[{nameof(Environment)}]");
                 UnityEngine.Object.DontDestroyOnLoad(_driver);
-                UnityEngine.Debug.Log($"{nameof(GX)} initialize !");
+                UnityEngine.Debug.Log($"{nameof(Environment)} initialize !");
 
                 Settings = UnityEngine.Resources.Load<SettingsData>("GhysXSettings");
                 UnityEngine.Debug.Log($"GhysX Settings: {JsonUtility.ToJson(Settings)}");
@@ -55,7 +55,7 @@ namespace GhysX.Framework
 
         public static void InitializeUniFramework()
         {
-            UnityEngine.Debug.LogWarning($"{nameof(GX)} & UniFramework Initialize !");
+            UnityEngine.Debug.LogWarning($"{nameof(Environment)} & UniFramework Initialize !");
             
             // 初始化事件系统
             UniEvent.Initalize();
@@ -66,7 +66,7 @@ namespace GhysX.Framework
 
         public static void InitializeYooAsset()
         {
-            UnityEngine.Debug.LogWarning($"{nameof(GX)} & YooAsset Initialize !");
+            UnityEngine.Debug.LogWarning($"{nameof(Environment)} & YooAsset Initialize !");
             
             YooAssetSettings = UnityEngine.Resources.Load<YooAssetSettingsData>("GhysXYooAssetSettings");
 
@@ -97,7 +97,7 @@ namespace GhysX.Framework
 
         public static IEnumerator InitializeYooAssetPackage()
         {
-            UnityEngine.Debug.LogWarning($"{nameof(GX)} & YooAsset Package Initialize !");
+            UnityEngine.Debug.LogWarning($"{nameof(Environment)} & YooAsset Package Initialize !");
             
             var packageName = YooAssetSettings.defaultPackageName;
 
@@ -143,7 +143,7 @@ namespace GhysX.Framework
             if (initializationOperation.Status == EOperationStatus.Succeed)
             {
                 // _machine.ChangeState<FsmUpdateVersion>();
-                UnityEngine.Debug.LogWarning($"{nameof(GX)} & YooAsset Package Initialize Succeed !!!");
+                UnityEngine.Debug.LogWarning($"{nameof(Environment)} & YooAsset Package Initialize Succeed !!!");
 
                 // 重新读取配置
                 if (package.CheckLocationValid("GhysXYooAssetSettings"))
@@ -185,7 +185,7 @@ namespace GhysX.Framework
         {
             if (_isLoxodonFrameworkInitialize == false)
             {
-                UnityEngine.Debug.LogWarning($"{nameof(GX)} & Loxodon.Framework Initialize !");
+                UnityEngine.Debug.LogWarning($"{nameof(Environment)} & Loxodon.Framework Initialize !");
                 _isLoxodonFrameworkInitialize = true;
                 GlobalWindowManager windowManager = UnityEngine.Object.FindObjectOfType<GlobalWindowManager>();
                 if (windowManager == null)
@@ -243,7 +243,7 @@ namespace GhysX.Framework
                 _isInitialize = false;
                 if (_driver != null)
                     GameObject.Destroy(_driver);
-                UnityEngine.Debug.Log($"{nameof(GX)} destroy all !");
+                UnityEngine.Debug.Log($"{nameof(Environment)} destroy all !");
             }
         }
 

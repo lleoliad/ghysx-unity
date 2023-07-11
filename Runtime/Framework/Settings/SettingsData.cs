@@ -1,6 +1,7 @@
 using System.Collections;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 using YooAsset;
 
 namespace GhysX.Framework.Settings
@@ -22,6 +23,11 @@ namespace GhysX.Framework.Settings
         // [TabGroup("YooAsset")]
         // [LabelText("默认资源包名称")]
         // public string defaultPackageName = "DefaultPackage";
+        
+        [FormerlySerializedAs("AuthServerAddress")]
+        [TabGroup("Server")]
+        [LabelText("授权服务地址")]
+        public string authServerAddress = "http://127.0.0.1";
 
         [TabGroup("Server")]
         [LabelText("服务地址")]

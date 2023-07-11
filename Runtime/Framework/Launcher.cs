@@ -20,18 +20,18 @@ namespace GhysX.Framework
             gameObject.name = $"[GhysX.{nameof(Launcher)}]";
             DontDestroyOnLoad(gameObject);
             
-            GX.InitializeLoxodonFramework();
-            GX.InitializeYooAsset();
+            Environment.InitializeLoxodonFramework();
+            Environment.InitializeYooAsset();
         }
 
         void Start()
         {
-            this._subscription = GX.Messenger.Subscribe<InitializePackageSuccessMessage>(OnMessage);
+            this._subscription = Environment.Messenger.Subscribe<InitializePackageSuccessMessage>(OnMessage);
         }
 
         private void OnMessage(InitializePackageSuccessMessage message)
         {
-            GX.WindowManager.transform.DestroyChildrenImmediate(); // clear's background object.
+            Environment.WindowManager.transform.DestroyChildrenImmediate(); // clear's background object.
             IUIViewLocator locator = Context.GetApplicationContext().GetService<IUIViewLocator>();
             var window = locator.LoadWindow("Logo");
             window.Create();
