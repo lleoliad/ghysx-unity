@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Globalization;
+using GhysX.Framework.External.Prefs;
 using GhysX.Framework.Repositories;
 using GhysX.Framework.Services;
 using GhysX.Framework.Settings;
@@ -8,6 +10,7 @@ using Loxodon.Framework.Binding;
 using Loxodon.Framework.Contexts;
 using Loxodon.Framework.Localizations;
 using Loxodon.Framework.Messaging;
+using Loxodon.Framework.Prefs;
 using Loxodon.Framework.Services;
 using Loxodon.Framework.Views;
 using UniFramework.Event;
@@ -181,6 +184,7 @@ namespace GhysX.Framework
             }
         }
 
+        #region Initialize Loxodon.Framework
         public static void InitializeLoxodonFramework()
         {
             if (_isLoxodonFrameworkInitialize == false)
@@ -233,8 +237,42 @@ namespace GhysX.Framework
                 // });
 
                 Messenger = new Messenger();
+
+                // Initialize Prefs
+                InitializeLoxodonFrameworkPreferences();
             }
         }
+
+        public static void InitializeLoxodonFrameworkPreferences()
+        {
+            BinaryFilePreferencesFactory factory = new BinaryFilePreferencesFactory();
+
+            /* Custom a ITypeEncoder for the type of CustomData. */
+            factory.Serializer.AddTypeEncoder(new CustomDataTypeEncoder<CustomData>());
+
+            Preferences.Register(factory);
+
+            // /* This is a global preferences. */
+            // Preferences prefs = Preferences.GetGlobalPreferences();
+            // prefs.SetString("username", "clark_ya@163.com");
+            // prefs.SetString("name", "clark");
+            // prefs.SetInt("zone", 5);
+            // prefs.Save();
+            //
+            // /* This is a preferences that it's only clark's data in the fifth zone. */
+            // Preferences userPrefs = Preferences.GetPreferences("clark@5"); /* username:clark, zone:5 */
+            // userPrefs.SetString("role.name", "clark");
+            // userPrefs.SetObject("role.logout.map.position", new Vector3(1f, 2f, 3f));
+            // userPrefs.SetObject("role.logout.map.forward", new Vector3(0f, 0f, 1f));
+            // userPrefs.SetObject("role.logout.time", DateTime.Now);
+            // userPrefs.SetObject("test.custom.data", new CustomData("test", "This is a test."));
+            // userPrefs.Save();
+
+            // Debug.LogFormat("username:{0}; name:{1}; zone:{2};", prefs.GetString("username"), prefs.GetString("name"), prefs.GetInt("zone"));
+            // Debug.LogFormat("position:{0} forward:{1} logout time:{2}", userPrefs.GetObject<Vector3>("role.logout.map.position"), userPrefs.GetObject<Vector3>("role.logout.map.forward"), userPrefs.GetObject<DateTime>("role.logout.time"));
+            // Debug.LogFormat("CustomData name:{0}   description:{1}", userPrefs.GetObject<CustomData>("test.custom.data").name, userPrefs.GetObject<CustomData>("test.custom.data").description);
+        }
+        #endregion
 
         public static void Destroy()
         {
