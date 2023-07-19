@@ -17,6 +17,10 @@ namespace GhysX.Framework.Editor
         
         public ScriptableObject yooAssetSettings;
 
+        public ScriptableObject quickLaunchSettings;
+        
+        public ScriptableObject domainNameSettings;
+
         // [Header("使用全局安装的il2cpp")]
         // public bool useGlobalIl2cpp;
         //

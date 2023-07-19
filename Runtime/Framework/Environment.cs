@@ -28,10 +28,12 @@ namespace GhysX.Framework
         private static GameObject _driver = null;
         public static SettingsData Settings { get; set; }
 
+        public static DomainNameData DomainNames { get; set; }
+
         public static YooAssetSettingsData YooAssetSettings { get; set; }
-        
+
         public static IMessenger Messenger { get; set; }
-        
+
         public static WindowManager WindowManager { get; set; }
 
         public static void Initialize()
@@ -51,6 +53,9 @@ namespace GhysX.Framework
 
                 Settings = UnityEngine.Resources.Load<SettingsData>("GhysXSettings");
                 UnityEngine.Debug.Log($"GhysX Settings: {JsonUtility.ToJson(Settings)}");
+                
+                DomainNames = UnityEngine.Resources.Load<DomainNameData>("DomainNames");
+                UnityEngine.Debug.Log($"GhysX DomainNames: {JsonUtility.ToJson(DomainNames)}");
 
                 InitializeUniFramework();
             }
@@ -59,7 +64,7 @@ namespace GhysX.Framework
         public static void InitializeUniFramework()
         {
             UnityEngine.Debug.LogWarning($"{nameof(Environment)} & UniFramework Initialize !");
-            
+
             // 初始化事件系统
             UniEvent.Initalize();
 
@@ -70,38 +75,31 @@ namespace GhysX.Framework
         public static void InitializeYooAsset()
         {
             UnityEngine.Debug.LogWarning($"{nameof(Environment)} & YooAsset Initialize !");
-            
+
             YooAssetSettings = UnityEngine.Resources.Load<YooAssetSettingsData>("GhysXYooAssetSettings");
 
             UnityEngine.Debug.Log($"GhysX - YooAsset Settings: {JsonUtility.ToJson(YooAssetSettings)}");
-            
+
             // 初始化资源系统
             YooAssets.Initialize();
-            
+
             YooAssets.SetOperationSystemMaxTimeSlice(30);
 
             AsyncTask task = new AsyncTask(InitializeYooAssetPackage(), true);
 
             /* Start the task */
-            task.OnPreExecute(() =>
-            {
-                Debug.Log("The task has started.");
-            }).OnPostExecute(() =>
-            {
-                Debug.Log("The task has completed.");/* only execute successfully */
-            }).OnError((e) =>
-            {
-                Debug.LogFormat("An error occurred:{0}", e);
-            }).OnFinish(() =>
-            {
-                Debug.Log("The task has been finished.");/* completed or error or canceled*/
-            }).Start();
+            task.OnPreExecute(() => { Debug.Log("The task has started."); })
+                .OnPostExecute(() => { Debug.Log("The task has completed."); /* only execute successfully */ })
+                .OnError((e) => { Debug.LogFormat("An error occurred:{0}", e); }).OnFinish(() =>
+                {
+                    Debug.Log("The task has been finished."); /* completed or error or canceled*/
+                }).Start();
         }
 
         public static IEnumerator InitializeYooAssetPackage()
         {
             UnityEngine.Debug.LogWarning($"{nameof(Environment)} & YooAsset Package Initialize !");
-            
+
             var packageName = YooAssetSettings.defaultPackageName;
 
             // 创建默认的资源包
@@ -109,11 +107,11 @@ namespace GhysX.Framework
 
             // 设置该资源包为默认的资源包，可以使用YooAssets相关加载接口加载该资源包内容。  
             YooAssets.SetDefaultPackage(package);
-            
+
             var playMode = YooAssetSettings.playMode;
-            
+
             InitializationOperation initializationOperation = null;
-            
+
             // 编辑器下的模拟模式
             if (playMode == EPlayMode.EditorSimulateMode)
             {
@@ -136,13 +134,15 @@ namespace GhysX.Framework
                 var createParameters = new HostPlayModeParameters();
                 createParameters.DecryptionServices = new GameDecryptionServices();
                 createParameters.QueryServices = new GameQueryServices();
-                createParameters.DefaultHostServer = YooAssetsHelper.GetHostServerURL(YooAssetSettings.defaultHostServer, YooAssetSettings.version);
-                createParameters.FallbackHostServer = YooAssetsHelper.GetHostServerURL(YooAssetSettings.fallbackHostServer, YooAssetSettings.version);
+                createParameters.DefaultHostServer =
+                    YooAssetsHelper.GetHostServerURL(YooAssetSettings.defaultHostServer, YooAssetSettings.version);
+                createParameters.FallbackHostServer =
+                    YooAssetsHelper.GetHostServerURL(YooAssetSettings.fallbackHostServer, YooAssetSettings.version);
                 initializationOperation = package.InitializeAsync(createParameters);
             }
 
             yield return initializationOperation;
-            
+
             if (initializationOperation.Status == EOperationStatus.Succeed)
             {
                 // _machine.ChangeState<FsmUpdateVersion>();
@@ -157,7 +157,7 @@ namespace GhysX.Framework
                         YooAssetSettings = assetOperationHandle.GetAssetObject<YooAssetSettingsData>();
                     }
                 }
-                
+
                 Messenger.Publish(new InitializePackageSuccessMessage(_driver));
 
                 // // var handle = package.LoadAssetAsync<GameObject>("Logo");
@@ -185,6 +185,7 @@ namespace GhysX.Framework
         }
 
         #region Initialize Loxodon.Framework
+
         public static void InitializeLoxodonFramework()
         {
             if (_isLoxodonFrameworkInitialize == false)
@@ -196,7 +197,7 @@ namespace GhysX.Framework
                     throw new NotFoundException("Not found the GlobalWindowManager.");
 
                 WindowManager = windowManager;
-                
+
                 ApplicationContext context = Context.GetApplicationContext();
 
                 IServiceContainer container = context.GetContainer();
@@ -272,6 +273,7 @@ namespace GhysX.Framework
             // Debug.LogFormat("position:{0} forward:{1} logout time:{2}", userPrefs.GetObject<Vector3>("role.logout.map.position"), userPrefs.GetObject<Vector3>("role.logout.map.forward"), userPrefs.GetObject<DateTime>("role.logout.time"));
             // Debug.LogFormat("CustomData name:{0}   description:{1}", userPrefs.GetObject<CustomData>("test.custom.data").name, userPrefs.GetObject<CustomData>("test.custom.data").description);
         }
+
         #endregion
 
         public static void Destroy()

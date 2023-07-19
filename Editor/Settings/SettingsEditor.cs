@@ -28,6 +28,8 @@ namespace GhysX.Framework.Editor
             // tree.Add("General", new GeneralSetting());
             tree.Add("General", GhysXSettings.Instance.settings as SettingsData);
             tree.Add("Yoo Asset", GhysXSettings.Instance.yooAssetSettings as YooAssetSettingsData);
+            tree.Add("Quick Launch", GhysXSettings.Instance.quickLaunchSettings as QuickLaunchData);
+            tree.Add("Domain Name", GhysXSettings.Instance.domainNameSettings as DomainNameData);
 
             return tree;
         }
@@ -40,11 +42,19 @@ namespace GhysX.Framework.Editor
         
         [AssetsOnly]
         public ScriptableObject yooAssetSettings;
+        
+        [AssetsOnly]
+        public ScriptableObject quickLaunchSettings;
+        
+        [AssetsOnly]
+        public ScriptableObject domainNameSettings;
 
         public GeneralSetting()
         {
             settingsData = GhysXSettings.Instance.settings as SettingsData;
-            settingsData = GhysXSettings.Instance.yooAssetSettings as YooAssetSettingsData;
+            yooAssetSettings = GhysXSettings.Instance.yooAssetSettings as YooAssetSettingsData;
+            quickLaunchSettings = GhysXSettings.Instance.quickLaunchSettings as QuickLaunchData;
+            domainNameSettings = GhysXSettings.Instance.domainNameSettings as DomainNameData;
         }
     }
 }

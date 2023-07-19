@@ -14,6 +14,8 @@ namespace GhysX.Framework.Editor
         private SerializedProperty _playMode;
         private SerializedProperty _settings;
         private SerializedProperty _yooAssetSettings;
+        private SerializedProperty _quickLaunchSettings;
+        private SerializedProperty _domainNameSettings;
         
         private GUIStyle buttonStyle;
         
@@ -32,6 +34,8 @@ namespace GhysX.Framework.Editor
             _playMode = _serializedObject.FindProperty("playMode");
             _settings = _serializedObject.FindProperty("settings");
             _yooAssetSettings = _serializedObject.FindProperty("yooAssetSettings");
+            _quickLaunchSettings = _serializedObject.FindProperty("quickLaunchSettings");
+            _domainNameSettings = _serializedObject.FindProperty("domainNameSettings");
             // _useGlobalIl2cpp = _serializedObject.FindProperty("useGlobalIl2cpp");
             // _hybridclrRepoURL = _serializedObject.FindProperty("hybridclrRepoURL");
             // _il2cppPlusRepoURL = _serializedObject.FindProperty("il2cppPlusRepoURL");
@@ -123,6 +127,8 @@ namespace GhysX.Framework.Editor
                 EditorGUILayout.PropertyField(_playMode);
                 EditorGUILayout.PropertyField(_settings);
                 EditorGUILayout.PropertyField(_yooAssetSettings);
+                EditorGUILayout.PropertyField(_quickLaunchSettings);
+                EditorGUILayout.PropertyField(_domainNameSettings);
                 // EditorGUILayout.PropertyField(_hybridclrRepoURL);
                 // EditorGUILayout.PropertyField(_il2cppPlusRepoURL);
                 // EditorGUILayout.PropertyField(_useGlobalIl2cpp);
