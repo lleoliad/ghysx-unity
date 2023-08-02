@@ -15,7 +15,7 @@ namespace GhysX.Framework
         {
             gameObject.name = $"[GhysX.{nameof(Launcher)}]";
             DontDestroyOnLoad(gameObject);
-            
+
             Environment.InitializeLoxodonFramework();
             Environment.InitializeYooAsset();
         }
@@ -29,11 +29,11 @@ namespace GhysX.Framework
         {
             Environment.WindowManager.transform.DestroyChildrenImmediate(); // clear's background object.
             IUIViewLocator locator = Context.GetApplicationContext().GetService<IUIViewLocator>();
-            var window = locator.LoadWindow("Logo");
+            var window = locator.LoadWindow<UIWindow>("Logo");
             window.Create();
             ITransition transition = window.Show().OnStateChanged((w, state) =>
             {
-                Debug.LogFormat("Window:{0} State{1}", w.Name, state);
+                Debug.LogFormat("Window:{0} State {1}", w.Name, state);
             });
         }
 
