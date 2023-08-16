@@ -4,23 +4,23 @@ namespace GhysX.Framework.External.ViewModels
 {
     public class ProgressBar : ViewModelBase
     {
-        private float progress;
-        private string tip;
-        private bool enable;
+        private float _progress;
+        private string _tip;
+        private bool _enable;
 
         public bool Enable {
-            get{ return this.enable; }
-            set{ this.Set<bool> (ref this.enable, value); }
+            get => this._enable;
+            set => this.Set<bool> (ref this._enable, value);
         }
 
         public float Progress {
-            get{ return this.progress; }
-            set{ this.Set<float> (ref this.progress, value); }
+            get => this._progress;
+            set => this.Set<float> (ref this._progress, value);
         }
 
         public string Tip {
-            get{ return this.tip; }
-            set{ this.Set<string> (ref this.tip, value); }
+            get => this._tip;
+            set => this.Set<string> (ref this._tip, value);
         }
     }
 }

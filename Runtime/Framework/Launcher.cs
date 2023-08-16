@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GhysX.Framework.Extensions;
 using Loxodon.Framework.Contexts;
 using Loxodon.Framework.Messaging;
@@ -27,13 +28,21 @@ namespace GhysX.Framework
 
         private void OnMessage(InitializePackageSuccessMessage message)
         {
-            Environment.WindowManager.transform.DestroyChildrenImmediate(); // clear's background object.
+            // Environment.WindowManager.transform.DestroyChildrenImmediate(); // clear's background object.
+            List<Transform> children = Environment.WindowManager.transform.GetChildren();
             IUIViewLocator locator = Context.GetApplicationContext().GetService<IUIViewLocator>();
             var window = locator.LoadWindow<UIWindow>("Logo");
             window.Create();
             ITransition transition = window.Show().OnStateChanged((w, state) =>
             {
                 Debug.LogFormat("Window:{0} State {1}", w.Name, state);
+                if (state == WindowState.VISIBLE)
+                {
+                    foreach (var child in children)
+                    {
+                        Object.DestroyImmediate(child.gameObject);
+                    }
+                }
             });
         }
 
